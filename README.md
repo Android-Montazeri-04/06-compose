@@ -177,3 +177,179 @@ state:
 - var selectedTabIndex by remember { mutableStateOf(0) }.  
 - هر Text در Row یک index دارد (0، 1، 2) و با کلیک روی آن selectedTabIndex = index می‌شود.  
 - زیر Row، با یک when(selectedTabIndex) { 0 -> ... 1 -> ... 2 -> ... } رنگ و متن Box را تعیین می‌کنی.[7
+
+
+در ادامه یک جزوه ساده و جامع در مورد Jetpack Compose با تمرکز بر state و remember و همراه با مثال‌ها و تمرین‌های کدشده (بدون TextField) آورده شده است. تمامی کدها و توضیحات خیلی ساده و قابل فهم نوشته شده‌اند.[5][10]
+
+***
+
+
+### چرا state و remember مهم هستند؟
+
+- در Compose هر بار که UI باید آپدیت شود، تابع‌های @Composable دوباره اجرا می‌شوند.
+- اگر از state و remember استفاده نکنیم، متغیرها هر بار به حالت اولیه بر می‌گردند و تغییرات کاربر از بین می‌رود.
+- state: متغیری که اگر عوض شود، UI آپدیت می‌شود.
+- remember: کمک می‌کند مقدار state بین رندرها حفظ شود.[10]
+
+***
+
+### مثال‌ها و کدها
+
+#### مثال ۱: شمارنده با دکمه
+
+```kotlin
+@Composable
+fun CounterExample() {
+    var count by remember { mutableStateOf(0) }
+    Button(onClick = { count++ }) {
+        Text("Count: $count")
+    }
+}
+```
+- هر بار کلیک، مقدار count یک واحد افزایش می‌یابد.[10]
+
+***
+
+#### مثال ۲: تغییر رنگ با کلیک
+
+```kotlin
+@Composable
+fun ColorToggleExample() {
+    var isOn by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(if (isOn) Color.Green else Color.Red)
+            .clickable { isOn = !isOn },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(if (isOn) "ON" else "OFF")
+    }
+}
+```
+- با کلیک، رنگ بین سبز و قرمز تغییر می‌کند.[10]
+
+***
+
+#### مثال ۳: انتخاب آیتم
+
+```kotlin
+@Composable
+fun ItemSelectorExample() {
+    var selectedIndex by remember { mutableStateOf(0) }
+    Column {
+        repeat(3) { index ->
+            Text(
+                text = "Item $index",
+                modifier = Modifier
+                    .clickable { selectedIndex = index }
+                    .background(if (index == selectedIndex) Color.Blue else Color.Gray)
+            )
+        }
+    }
+}
+```
+- با کلیک روی هر آیتم، رنگ آن آبی می‌شود.[10]
+
+***
+
+### تمرین‌ها و پاسخ‌ها
+
+#### تمرین ۱: شمارنده منفی/مثبت
+
+```kotlin
+@Composable
+fun CounterNegativePositive() {
+    var count by remember { mutableStateOf(0) }
+    Button(
+        onClick = { count-- },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (count < 0) Color.Red else Color.Green
+        )
+    ) {
+        Text("Count: $count")
+    }
+}
+```
+- با هر کلیک، مقدار count کاهش می‌یابد و رنگ دکمه بسته به مقدار عوض می‌شود.[10]
+
+***
+
+#### تمرین ۲: سوییچ نور روز/شب
+
+```kotlin
+@Composable
+fun DayNightToggle() {
+    var isDay by remember { mutableStateOf(true) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(if (isDay) Color.White else Color.Black)
+            .clickable { isDay = !isDay },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(if (isDay) "Day Mode" else "Night Mode")
+    }
+}
+```
+- با کلیک، حالت بین روز و شب تغییر می‌کند.[10]
+
+***
+
+#### تمرین ۳: شمارنده با حد بالا
+
+```kotlin
+@Composable
+fun CounterWithLimit() {
+    var count by remember { mutableStateOf(0) }
+    Button(
+        onClick = { if (count < 5) count++ },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (count == 5) Color.Orange else Color.Blue
+        )
+    ) {
+        Text("Count: $count")
+    }
+}
+```
+- شمارنده فقط تا 5 افزایش می‌یابد و وقتی به 5 می‌رسد، رنگ دکمه نارنجی می‌شود.[10]
+
+***
+
+#### تمرین ۴: انتخاب تب (Tab) ساده
+
+```kotlin
+@Composable
+fun TabSelectorExample() {
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    Column {
+        Row {
+            repeat(3) { index ->
+                Text(
+                    text = "Tab $index",
+                    modifier = Modifier
+                        .clickable { selectedTabIndex = index }
+                        .background(if (index == selectedTabIndex) Color.Blue else Color.Gray)
+                )
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(
+                    when (selectedTabIndex) {
+                        0 -> Color.Blue
+                        1 -> Color.Green
+                        2 -> Color.Yellow
+                        else -> Color.Gray
+                    }
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("Page ${selectedTabIndex + 1}")
+        }
+    }
+}
+```
+- با کلیک روی هر تب، محتوای زیر عوض می‌شود و رنگ تب انتخاب‌شده آبی می‌شود.[10]
