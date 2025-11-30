@@ -16,7 +16,7 @@
 - اگر این عدد را به‌صورت یک state نگه داریم، هر بار که عدد عوض شود، متن روی صفحه هم خودکار عوض می‌شود.[7]
 
 در Compose معمولا از این الگو استفاده می‌شود:  
-- var count by remember { mutableStateOf(0) }  
+- var count = remember { mutableStateOf(0) }  
 - این یعنی: «یک state به اسم count دارم، مقدار اولیه‌اش 0 است، و می‌خواهم بین رندرها حفظ شود.»[7]
 
 ## remember چیست؟
@@ -71,7 +71,7 @@
 state اینجا می‌تواند یک Boolean باشد: isOn = true/false.[13]
 
 سناریو:  
-- var isOn by remember { mutableStateOf(false) }  
+- var isOn = remember { mutableStateOf(false) }  
 - اگر isOn == true → رنگ سبز.  
 - اگر isOn == false → رنگ قرمز.  
 - وقتی روی Box کلیک می‌کنیم، isOn = !isOn.  
@@ -85,7 +85,7 @@ state اینجا می‌تواند یک Boolean باشد: isOn = true/false.[13]
 
 state:  
 - selectedIndex که مثلا عدد 0، 1 یا 2 است.  
-- var selectedIndex by remember { mutableStateOf(0) }.  
+- var selectedIndex = remember { mutableStateOf(0) }.  
 
 منطق:  
 - وقتی روی آیتم i کلیک می‌کنیم، selectedIndex = i.  
@@ -94,7 +94,7 @@ state:
 ## تمرین‌ها (بدون TextField)
 
 در همه تمرین‌ها فرض کن از الگوی کلی زیر استفاده می‌کنی:  
-- var something by remember { mutableStateOf(initialValue) }  
+- var something = remember { mutableStateOf(initialValue) }  
 - وقتی event رخ می‌دهد (onClick و …)، مقدار را تغییر می‌دهی.  
 - UI با توجه به مقدار جدید رسم می‌شود.[7]
 
@@ -114,7 +114,7 @@ state:
 
 پاسخ پیشنهادی (ذهنی و ساده):  
 - فقط یک state: count از نوع Int.  
-- var count by remember { mutableStateOf(0) }.  
+- var count = remember { mutableStateOf(0) }.  
 - onClick دکمه: count--.  
 - رنگ متن: اگر count < 0 → Red، در غیر این صورت → Green.[7]
 
@@ -135,7 +135,7 @@ state:
 
 پاسخ پیشنهادی (ذهنی):  
 - یک state از نوع Boolean: isDay.  
-- var isDay by remember { mutableStateOf(true) }.  
+- var isDay = remember { mutableStateOf(true) }.  
 - اگر isDay == true → رنگ پس‌زمینه Color.White و متن "Day Mode".  
 - اگر isDay == false → رنگ پس‌زمینه Color.Black و متن "Night Mode".  
 - در Modifier.clickable روی Box، isDay = !isDay.[7]
@@ -156,7 +156,7 @@ state:
 
 پاسخ پیشنهادی (ذهنی):  
 - state: همان count از نوع Int.  
-- var count by remember { mutableStateOf(0) }.  
+- var count = remember { mutableStateOf(0) }.  
 - در onClick: اگر count < 5 بود، count++، اگر نه، کاری نکن.  
 - رنگ دکمه: اگر count == 5 → Color(مثلا Orange)، وگرنه یک رنگ پیش‌فرض.[7]
 
@@ -174,7 +174,7 @@ state:
 
 پاسخ پیشنهادی (ذهنی):  
 - یک state: selectedTabIndex از نوع Int با مقدار اولیه 0.  
-- var selectedTabIndex by remember { mutableStateOf(0) }.  
+- var selectedTabIndex = remember { mutableStateOf(0) }.  
 - هر Text در Row یک index دارد (0، 1، 2) و با کلیک روی آن selectedTabIndex = index می‌شود.  
 - زیر Row، با یک when(selectedTabIndex) { 0 -> ... 1 -> ... 2 -> ... } رنگ و متن Box را تعیین می‌کنی.[7
 
@@ -200,7 +200,7 @@ state:
 ```kotlin
 @Composable
 fun CounterExample() {
-    var count by remember { mutableStateOf(0) }
+    var count = remember { mutableStateOf(0) }
     Button(onClick = { count++ }) {
         Text("Count: $count")
     }
@@ -229,7 +229,7 @@ fun CounterExample() {
 ```kotlin
 @Composable
 fun ColorToggleExample() {
-    var isOn by remember { mutableStateOf(false) }
+    var isOn = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -250,7 +250,7 @@ fun ColorToggleExample() {
 ```kotlin
 @Composable
 fun ItemSelectorExample() {
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex = remember { mutableStateOf(0) }
     Column {
         repeat(3) { index ->
             Text(
@@ -274,7 +274,7 @@ fun ItemSelectorExample() {
 ```kotlin
 @Composable
 fun CounterNegativePositive() {
-    var count by remember { mutableStateOf(0) }
+    var count = remember { mutableStateOf(0) }
     Button(
         onClick = { count-- },
         colors = ButtonDefaults.buttonColors(
@@ -294,7 +294,7 @@ fun CounterNegativePositive() {
 ```kotlin
 @Composable
 fun DayNightToggle() {
-    var isDay by remember { mutableStateOf(true) }
+    var isDay = remember { mutableStateOf(true) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -315,7 +315,7 @@ fun DayNightToggle() {
 ```kotlin
 @Composable
 fun CounterWithLimit() {
-    var count by remember { mutableStateOf(0) }
+    var count = remember { mutableStateOf(0) }
     Button(
         onClick = { if (count < 5) count++ },
         colors = ButtonDefaults.buttonColors(
@@ -335,7 +335,7 @@ fun CounterWithLimit() {
 ```kotlin
 @Composable
 fun TabSelectorExample() {
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex = remember { mutableStateOf(0) }
     Column {
         Row {
             repeat(3) { index ->
