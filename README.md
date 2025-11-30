@@ -206,6 +206,20 @@ fun CounterExample() {
     }
 }
 ```
+```kotlin
+@Composable
+fun CounterExample() {
+    var count = remember { mutableStateOf(0) }
+
+    Column {
+        Text("Count: ${count.value}", color = if (count.value % 2 == 0) Color.Red else Color.Blue)
+        Button(onClick = { count.value++ }) {
+            Text("Increment")
+        }
+    }
+}
+```
+
 - هر بار کلیک، مقدار count یک واحد افزایش می‌یابد.[10]
 
 ***
